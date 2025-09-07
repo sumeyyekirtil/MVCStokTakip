@@ -34,14 +34,14 @@ namespace MVCStokTakip.Controllers
 		}
 
 		// GET: CRUDController/Details/5
-		public ActionResult Details(int id)
+		public ActionResult Details(int id) //add view - razor - details - user class - content ile görünüm sayfası oluşturuldu
 		{
 			var kayit = _context.Users.Find(id); //id ye ulaşıp kayıt detaylarını yazdırma işlemi
 			return View(kayit);
 		}
 
 		// GET: CRUDController/Create
-		public ActionResult Create()
+		public ActionResult Create() //add view - razor - create - user class - content ile görünüm sayfası oluşturuldu
 		{
 			return View();
 		}
@@ -49,10 +49,12 @@ namespace MVCStokTakip.Controllers
 		// POST: CRUDController/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Create(IFormCollection collection)
+		public ActionResult Create(User collection) //user olarak değiştirildi sınıftan alınıp okunması için
 		{
 			try
 			{
+				_context.Users.Add(collection);
+				_context.SaveChanges();
 				return RedirectToAction(nameof(Index));
 			}
 			catch
@@ -62,39 +64,47 @@ namespace MVCStokTakip.Controllers
 		}
 
 		// GET: CRUDController/Edit/5
-		public ActionResult Edit(int id)
+		public ActionResult Edit(int id) //add view - razor - edit - user class - content ile görünüm sayfası oluşturuldu
 		{
-			return View();
+			var kayit = _context.Users.Find(id); //uyeler tablosundan route dan gelen id ile eşleşen kaydı bul ve ekrana gönder.
+			return View(kayit);
 		}
 
 		// POST: CRUDController/Edit/5
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Edit(int id, IFormCollection collection)
+		public ActionResult Edit(int id, User collection)
 		{
 			try
 			{
-				return RedirectToAction(nameof(Index));
+				_context.Users.Update(collection); //ekrandan gelen modeli veritabanındaki kaydı değiştirecek şekilde ayarla
+				_context.SaveChanges(); //değişiklikleri db kaydet
+
+				return RedirectToAction(nameof(Index)); //Index isimli action metoduna yönlendir
 			}
 			catch
 			{
-				return View();
+				ModelState.AddModelError("", "Hata Oluştu!"); //hata oluşursa yazdır
 			}
+			return View(collection);
 		}
 
 		// GET: CRUDController/Delete/5
 		public ActionResult Delete(int id)
 		{
-			return View();
+			var kayit = _context.Users.Find(id); //id ye ulaşıp kayıt detaylarını yazdırma işlemi
+			return View(kayit);
 		}
 
 		// POST: CRUDController/Delete/5
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Delete(int id, IFormCollection collection)
+		public ActionResult Delete(int id, User collection)
 		{
 			try
 			{
+				_context.Users.Remove(collection); //ekrandan gelen üye nesnesini silinecek olarak işaretle
+				_context.SaveChanges();
 				return RedirectToAction(nameof(Index));
 			}
 			catch

@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "File Upload - Fotoğraf Yükleme İşlemi";
+}
+
+<h1>@ViewBag.Title</h1>
+
+<form action="" method="post" enctype="multipart/form-data">
+    <input type="file" name="dosya" />
+    <input type="submit" value="Yükle" class="btn btn-primary" />
+</form>
+
+<hr>
+
+<img src="/Images/@TempData["Resim"]" alt="Resim yok" height="118" />
+
+<h6>Resim Adı : @TempData["Resim"]</h6>
+
+@{
+    var dosyalar = new DirectoryInfo(Directory.GetCurrentDirectory() + "/wwwroot/Images/");
+    var infoList = dosyalar.GetFiles();
+}
+
+<table class="table table-hover">
+    <tr>
+        <th>Resim</th>
+        <th>Dosya Adı</th>
+        <th>Oluşturma Tarihi</th>
+        <th>Dosya Boyutu</th>
+        <th>Sil</th>
+    </tr>
+    @foreach (var item in infoList)
+    {
+        <tr>
+            <td>
+                <img src="/Images/@item.Name" title="@item.Name" height="45" />
+            </td>
+            <td>@item.Name</td>
+            <td>@item.CreationTime</td>
+            <td>@item.Length</td>
+            <td>
+                <form action="/PhotoUpload/ResimSil" method="post">
+                    <input type="hidden" name="resimYolu" value="@item.FullName" />
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Resmi Silmek İstiyor Musunuz?')">
+                        <span class="btn-close-white"></span>
+                    </button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>

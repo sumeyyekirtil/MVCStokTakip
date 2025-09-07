@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using MVCStokTakip.Models;
 
 namespace MVCStokTakip
@@ -20,7 +21,12 @@ namespace MVCStokTakip
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            var app = builder.Build();
+			//Schema hatasý çözümü
+			builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
+			{
+				x.LoginPath = "/Filter/Login"; //admin oturum açma sayfamýzý belirttik
+			});
+			var app = builder.Build(); //builder nesnesi üzerinden eklenen servislerle beraber app nesnesi oluþturuluyor
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
