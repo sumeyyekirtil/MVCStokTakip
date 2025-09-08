@@ -11,6 +11,8 @@ namespace MVCStokTakip.Models
 	public class Context : DbContext  //DbContext sınıfı Nuget dan yüklediğimiz entity framework core paketleri ile gelmektedir ve ef ile vt işlemlerini yapabilmemizi sağlar
 	{
 		public DbSet<User> Users { get; set; }
+		public DbSet<Category> Categories { get; set; }
+		public DbSet<Product> Products { get; set; }
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) //override on enter
 		{
 			optionsBuilder.UseSqlServer("server=ASUS-PRO; database=MVCStock; Integrated Security=True; TrustServerCertificate=True");

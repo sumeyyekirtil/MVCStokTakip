@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Üye Giriş";
 }
 
 <div class="text-center">
@@ -9,13 +9,13 @@
 
 <h2><i>Üye Girişi</i></h2>
 <div>
-    <h5>Kullanıcı Adı</h5>
-    <input type="text" name="name" placeholder="Kullanıcı Adı" />
-    <h5>Mail Adresi</h5>
-    <input type="text" name="email" placeholder="Mail" />
-    <h5>Şifre</h5>
-    <input type="password" name="password" placeholder="Şifre" />
-    <br>
-    <br>
-    <input type="submit" name="name" value="Gönder" />
+    <form action="/Home/Login" method="post">
+        <h5>Mail Adresi</h5>
+        <input type="text" name="email" placeholder="Mail" />
+        <h5>Şifre</h5>
+        <input type="password" name="password" placeholder="Şifre" />
+        <br>
+        <br>
+        <input type="submit" value="Gönder" />
+    </form>
 </div>

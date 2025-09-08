@@ -1,24 +1,52 @@
-using System.Diagnostics;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MVCStokTakip.Models;
+using System.Diagnostics;
+using System.Security.Claims;
 
 namespace MVCStokTakip.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+		private readonly Context _context; //generate constructor
 
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
+		public HomeController(ILogger<HomeController> logger, Context context)
+		{
+			_logger = logger;
+			_context = context;
+		}
 
-        public IActionResult Index()
+		public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult Privacy()
+		[HttpPost]
+		public async Task<IActionResult> Login(string kullaniciAdi, string sifre) //await metodunu kullanabilmek için asenkron iþlemler yapýlmasýný saðlar (make)
+		{
+			var kullanici = _context.Users.FirstOrDefault(u => u.Email == kullaniciAdi && u.Password == sifre);
+			if (kullanici != null)
+			{
+				HttpContext.Session.SetInt32("kullaniciId", kullanici.Id);
+				var haklar = new List<Claim>() //kullanýcý haklarý tanýmladýk
+				{
+					new(ClaimTypes.Email, kullanici.Email), //claim = hak (kullanýcýya tanýmlanan haklar)
+						new(ClaimTypes.Role, "Admin")
+				};
+				var kullaniciKimligi = new ClaimsIdentity(haklar, "Login"); //kullanýcý için bir kimlik oluþturduk
+				ClaimsPrincipal claimsPrincipal = new(kullaniciKimligi); //bu sýnýftan bir nesne oluþturup bilgilerde saklý haklar ile kural oluþturulabilir
+				await HttpContext.SignInAsync(claimsPrincipal); //yukarýdaki yetkilerle sisteme giriþ yaptýk
+				return RedirectToAction("Index", "CRUD");
+			}
+			else 
+				@TempData["Message"] = "<div class='alert alert-danger'>Giriþ Baþarýsýz</div>";
+			
+				return RedirectToAction("Index");
+		}
+
+		public IActionResult Privacy()
         {
             return View();
         }

@@ -10,9 +10,9 @@ namespace MVCStokTakip.Controllers
 {
 	public class FilterController : Controller
 	{
-		private readonly User _context; //generate constructor
+		private readonly Context _context; //generate constructor
 
-		public FilterController(User context)
+		public FilterController(Context context)
 		{
 			_context = context;
 		}
@@ -24,7 +24,7 @@ namespace MVCStokTakip.Controllers
 
 		[UserControl]
 		public IActionResult UyelikBilgilerim()
-		{//UserControl sınıfında filter ile override metot kullandığımız içi bu kısımda kod sadeliğine yapılır
+		{//UserControl sınıfında filter ile override metot kullandığımız için bu kısımda kod sadeliğine yapılır
 			var id = HttpContext.Session.GetInt32("kullaniciId");
 			var kullanici = _context.Users.Find(id);
 			return View(kullanici);
@@ -51,26 +51,6 @@ namespace MVCStokTakip.Controllers
 
 		public IActionResult Login()
 		{
-			return View();
-		}
-
-		[HttpPost]
-		public async Task<IActionResult> Login(string kullaniciAdi, string sifre) //await metodunu kullanabilmek için asenkron işlemler yapılmasını sağlar (make)
-		{
-			var kullanici = _context.Users.FirstOrDefault(u => u.KullaniciAdi == kullaniciAdi && u.Sifre == sifre);
-			if (kullanici != null)
-			{
-				HttpContext.Session.SetInt32("kullaniciId", kullanici.Id);
-				var haklar = new List<Claim>() //kullanıcı hakları tanımladık
-				{
-					new(ClaimTypes.Email, kullanici.Email), //claim = hak (kullanıcıya tanımlanan haklar)
-						new(ClaimTypes.Role, "Admin")
-				};
-				var kullaniciKimligi = new ClaimsIdentity(haklar, "Login"); //kullanıcı için bir kimlik oluşturduk
-				ClaimsPrincipal claimsPrincipal = new(kullaniciKimligi); //bu sınıftan bir nesne oluşturup bilgilerde saklı haklar ile kural oluşturulabilir
-				await HttpContext.SignInAsync(claimsPrincipal); //yukarıdaki yetkilerle sisteme giriş yaptık
-				return RedirectToAction("Edit");
-			}
 			return View();
 		}
 

@@ -24,7 +24,7 @@ namespace MVCStokTakip
 			//Schema hatasý çözümü
 			builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
 			{
-				x.LoginPath = "/Filter/Login"; //admin oturum açma sayfamýzý belirttik
+				x.LoginPath = "/Home/Index"; //admin oturum açma sayfamýzý belirttik
 			});
 			var app = builder.Build(); //builder nesnesi üzerinden eklenen servislerle beraber app nesnesi oluþturuluyor
 
