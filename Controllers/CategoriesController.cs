@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MVCStokTakip.Models;
 
 namespace MVCStokTakip.Controllers
 {
+	[Authorize] //kullanıcı login yapmadan erişemez (her metota tek tek tanımlama yapılmaması için)
 	public class CategoriesController : Controller
 	{
 		private readonly Context _context;
@@ -24,7 +26,7 @@ namespace MVCStokTakip.Controllers
 		// GET: CategoriesController/Details/5
 		public ActionResult Details(int id)
 		{
-			var bilgi = _context.Users.Find(id); //id ye ulaşıp kayıt detaylarını yazdırma işlemi
+			var bilgi = _context.Categories.Find(id); //id ye ulaşıp kayıt detaylarını yazdırma işlemi
 			return View(bilgi);
 		}
 
@@ -44,6 +46,8 @@ namespace MVCStokTakip.Controllers
 				try
 				{
 					//crud ekleme
+					_context.Categories.Add(collection);
+					_context.SaveChanges();
 					return RedirectToAction(nameof(Index));
 				}
 				catch
@@ -57,7 +61,7 @@ namespace MVCStokTakip.Controllers
 		// GET: CategoriesController/Edit/5
 		public ActionResult Edit(int id)
 		{
-			var kayit = _context.Users.Find(id); //uyeler tablosundan route dan gelen id ile eşleşen kaydı bul ve ekrana gönder.
+			var kayit = _context.Categories.Find(id); //uyeler tablosundan route dan gelen id ile eşleşen kaydı bul ve ekrana gönder.
 			return View(kayit);
 		}
 
@@ -87,7 +91,8 @@ namespace MVCStokTakip.Controllers
 		// GET: CategoriesController/Delete/5
 		public ActionResult Delete(int id)
 		{
-			return View();
+			var kayit = _context.Categories.Find(id); //id ye ulaşıp kayıt detaylarını yazdırma işlemi
+			return View(kayit);
 		}
 
 		// POST: CategoriesController/Delete/5
@@ -95,25 +100,25 @@ namespace MVCStokTakip.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Delete(int id, Category collection)
 		{
-			if (ModelState.IsValid)
-			{
 				try
 				{
 					//crud silme
+					_context.Categories.Remove(collection); //ekrandan gelen üye nesnesini silinecek olarak işaretle
+					_context.SaveChanges();
 					return RedirectToAction(nameof(Index));
 				}
 				catch
 				{
 					ModelState.AddModelError("", "Hata Oluştu!");
 				}
-			}
 			return View(collection);
 		}
-		public IActionResult Logout()
+
+		public ActionResult LogOut()
 		{
-			HttpContext.SignOutAsync(); //kullanıcı oturumunu kapat
-			HttpContext.Session.Clear(); //sessionları temizle
-			return View("Index"); //yönlendir
+			//FormsAuthentication.SignOut();
+			//Session.Abandon(); //bırakmak, terketmek
+			return RedirectToAction("Index", "Home");
 		}
 	}
 }

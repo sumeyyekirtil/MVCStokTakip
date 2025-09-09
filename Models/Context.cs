@@ -30,7 +30,7 @@ namespace MVCStokTakip.Models
 					Email = "admin@gmail.com",
 					Name = "User",
 					Surname = "Admin",
-					Birthday = DateTime.Now,
+					Birthday = DateTime.Today,
 					Nickname = "admin",
 					Password = "123",
 					RepeatPassword = "123",

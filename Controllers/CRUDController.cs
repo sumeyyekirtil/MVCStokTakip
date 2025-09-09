@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MVCStokTakip.Models; //Context class import
 
@@ -17,8 +18,11 @@ namespace MVCStokTakip.Controllers
 	//Get açıldığında gelen gönderim yolu, Post tıklandığındaki gönderim yoludur
 	//Get metodunda liste tanımlanıp gösterime açılır
 	//Post metodu olan kısma yapılacak işlem detayı girilir
+	[Authorize] //kullanıcı login yapmadan erişemez (her metota tek tek tanımlama yapılmaması için)
 	public class CRUDController : Controller
 	{
+		
+
 		private readonly Context _context; // _context - sağ tık - generate constructor (yapıcı sınıfı kurduk)
 
 		public CRUDController(Context context)

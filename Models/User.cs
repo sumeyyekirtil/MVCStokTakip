@@ -33,7 +33,7 @@ namespace MVCStokTakip.Models
 		public string Nickname { get; set; }
 		
 		[Display(Name = "Şifre")]
-		[StringLength(15, ErrorMessage = "{0} {2} Karakterden Az Olamaz!", MinimumLength = 5)]
+		[StringLength(15, ErrorMessage = "{0} {2} Karakterden Az Olamaz!", MinimumLength = 3)]
 		[Compare("Password")] //sifre property si ile karşılaştır
 		public string Password { get; set; }
 		public string? RepeatPassword { get; set; }

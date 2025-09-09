@@ -20,6 +20,7 @@ namespace MVCStokTakip
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+			builder.Services.AddSession();
 
 			//Schema hatasý çözümü
 			builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>

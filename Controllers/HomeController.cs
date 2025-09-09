@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVCStokTakip.Models;
@@ -7,6 +8,7 @@ using System.Security.Claims;
 
 namespace MVCStokTakip.Controllers
 {
+	[AllowAnonymous] //authorize iþleminden muaf tutulacak sayfa
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -20,7 +22,7 @@ namespace MVCStokTakip.Controllers
 
 		public IActionResult Index()
         {
-            return View();
+			return View();
         }
 
 		[HttpPost]
@@ -33,17 +35,17 @@ namespace MVCStokTakip.Controllers
 				var haklar = new List<Claim>() //kullanýcý haklarý tanýmladýk
 				{
 					new(ClaimTypes.Email, kullanici.Email), //claim = hak (kullanýcýya tanýmlanan haklar)
-						new(ClaimTypes.Role, "Admin")
+						new(ClaimTypes.Role, "admin@gmail.com")
 				};
-				var kullaniciKimligi = new ClaimsIdentity(haklar, "Login"); //kullanýcý için bir kimlik oluþturduk
+				var kullaniciKimligi = new ClaimsIdentity(haklar, "Index"); //kullanýcý için bir kimlik oluþturduk
 				ClaimsPrincipal claimsPrincipal = new(kullaniciKimligi); //bu sýnýftan bir nesne oluþturup bilgilerde saklý haklar ile kural oluþturulabilir
 				await HttpContext.SignInAsync(claimsPrincipal); //yukarýdaki yetkilerle sisteme giriþ yaptýk
-				return RedirectToAction("Index", "CRUD");
+				return RedirectToAction("Index", "Product");
 			}
 			else 
 				@TempData["Message"] = "<div class='alert alert-danger'>Giriþ Baþarýsýz</div>";
 			
-				return RedirectToAction("Index");
+				return RedirectToAction("Index", "Home");
 		}
 
 		public IActionResult Privacy()
@@ -56,5 +58,5 @@ namespace MVCStokTakip.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-    }
+	}
 }
