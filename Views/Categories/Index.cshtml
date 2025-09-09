@@ -1,15 +1,15 @@
 ﻿@model IEnumerable<MVCStokTakip.Models.Category>
 
 @{
-    ViewData["Title"] = "Kategoriler";
+    ViewData["Title"] = "Kategori";
 }
 
-<h1>Kategoriler</h1>
+<h1>Kategori</h1>
 
 <p>
     <a asp-action="Create">Yeni Oluştur</a>
 </p>
-<table class="table">
+<table class="table table-hover">
     <thead>
         <tr>
             <th>
@@ -51,3 +51,6 @@
 }
     </tbody>
 </table>
+<div style="padding-inline: 2px; font-family: 'Century Gothic'">
+    <a href="/Categories/Logout" class="btn btn-danger">Oturumu Kapat</a>
+</div>

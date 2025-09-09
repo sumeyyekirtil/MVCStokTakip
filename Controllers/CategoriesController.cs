@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MVCStokTakip.Models;
 
@@ -16,19 +17,21 @@ namespace MVCStokTakip.Controllers
 		// GET: CategoriesController
 		public ActionResult Index()
 		{
-			return View(_context.Categories);
+			return View(_context.Categories); //model view e görünüm vermesi için sadece index context den sınıf kullanılır
+											  //edit, create, delete, details de kullanılırsa InvalidOperationException: The model item passed into the ViewDataDictionary is of type 'Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1[ .Models.Category]', but this ViewDataDictionary instance requires a model item of type ' .Models.Category'. error
 		}
 
 		// GET: CategoriesController/Details/5
 		public ActionResult Details(int id)
 		{
-			return View();
+			var bilgi = _context.Users.Find(id); //id ye ulaşıp kayıt detaylarını yazdırma işlemi
+			return View(bilgi);
 		}
 
 		// GET: CategoriesController/Create
 		public ActionResult Create()
 		{
-			return View(_context.Categories);
+			return View();
 		}
 
 		// POST: CategoriesController/Create
@@ -54,10 +57,12 @@ namespace MVCStokTakip.Controllers
 		// GET: CategoriesController/Edit/5
 		public ActionResult Edit(int id)
 		{
-			return View();
+			var kayit = _context.Users.Find(id); //uyeler tablosundan route dan gelen id ile eşleşen kaydı bul ve ekrana gönder.
+			return View(kayit);
 		}
 
 		// POST: CategoriesController/Edit/5
+		
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Edit(int id, Category collection)
@@ -67,6 +72,8 @@ namespace MVCStokTakip.Controllers
 				try
 				{
 					//crud güncelleme
+					_context.Categories.Update(collection);
+					_context.SaveChanges();
 					return RedirectToAction(nameof(Index));
 				}
 				catch
@@ -101,6 +108,12 @@ namespace MVCStokTakip.Controllers
 				}
 			}
 			return View(collection);
+		}
+		public IActionResult Logout()
+		{
+			HttpContext.SignOutAsync(); //kullanıcı oturumunu kapat
+			HttpContext.Session.Clear(); //sessionları temizle
+			return View("Index"); //yönlendir
 		}
 	}
 }

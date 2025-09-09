@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using MVCStokTakip.Models; //Context class import
 
 //Program cs ye builder AddDBContext<> sınıfı ekleyelim. Bu kısım crud controller çalışmasını sağlıyor.

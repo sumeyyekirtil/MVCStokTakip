@@ -16,7 +16,7 @@ namespace MVCStokTakip.Controllers
 		// GET: ProductsController
 		public ActionResult Index()
 		{
-			return View();
+			return View(_context.Products);
 		}
 
 		// GET: ProductsController/Details/5

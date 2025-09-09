@@ -12,13 +12,6 @@ namespace MVCStokTakip.Filters
 
 		public override void OnActionExecuting(ActionExecutingContext context)
 		{
-			var SessionUserGuid = context.HttpContext.Session.GetString("UserGuid");
-			var CookieUserguid = context.HttpContext.Request.Cookies["userguid"];
-			var id = context.HttpContext.Session.GetInt32("kullaniciId");
-			if (id is null)
-			{
-				context.Result = new RedirectResult("/MVC12Session?msg=AccessDenied");
-			}
 			base.OnActionExecuting(context);
 		}
 
