@@ -18,14 +18,13 @@ namespace MVCStokTakip.Controllers
 		// GET: NewUsersController
 		public ActionResult Index()
 		{
-			return View(_context.Users);
+			return View();
 		}
 
 		// GET: NewUsersController/Details/5
 		public ActionResult Details(int id)
 		{
-			var bilgi = _context.Users.Find(id); //id ye ulaşıp kayıt detaylarını yazdırma işlemi
-			return View(bilgi);
+			return View();
 		}
 
 		// GET: NewUsersController/Create
@@ -44,7 +43,8 @@ namespace MVCStokTakip.Controllers
 				//crud ekleme
 				_context.Users.Add(collection);
 				_context.SaveChanges();
-				return RedirectToAction(nameof(Index));
+
+				return RedirectToAction("Index", "CRUD");
 			}
 			catch
 			{
@@ -55,8 +55,7 @@ namespace MVCStokTakip.Controllers
 		// GET: NewUsersController/Edit/5
 		public ActionResult Edit(int id)
 		{
-			var kayit = _context.Users.Find(id); //uyeler tablosundan route dan gelen id ile eşleşen kaydı bul ve ekrana gönder.
-			return View(kayit);
+			return View();
 		}
 
 		// POST: NewUsersController/Edit/5
@@ -66,9 +65,6 @@ namespace MVCStokTakip.Controllers
 		{
 			try
 			{
-				//crud güncelleme
-				_context.Users.Update(collection);
-				_context.SaveChanges();
 				return RedirectToAction(nameof(Index));
 			}
 			catch
@@ -80,8 +76,7 @@ namespace MVCStokTakip.Controllers
 		// GET: NewUsersController/Delete/5
 		public ActionResult Delete(int id)
 		{
-			var kayit = _context.Users.Find(id); //id ye ulaşıp kayıt detaylarını yazdırma işlemi
-			return View(kayit);
+			return View();
 		}
 
 		// POST: NewUsersController/Delete/5
@@ -89,18 +84,14 @@ namespace MVCStokTakip.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Delete(int id, User collection)
 		{
-				try
-				{
-					//crud silme
-					_context.Users.Remove(collection); //ekrandan gelen üye nesnesini silinecek olarak işaretle
-					_context.SaveChanges();
-					return RedirectToAction(nameof(Index));
-				}
-				catch
-				{
-					ModelState.AddModelError("", "Hata Oluştu!");
-				}
-			return View(collection);
+			try
+			{
+				return RedirectToAction(nameof(Index));
+			}
+			catch
+			{
+				return View(collection);
+			}
 		}
 	}
 }

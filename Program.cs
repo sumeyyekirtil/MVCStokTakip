@@ -40,6 +40,7 @@ namespace MVCStokTakip
             app.UseHttpsRedirection();
             app.UseRouting();
 
+            app.UseSession();
             app.UseAuthorization();
 
             app.MapStaticAssets();

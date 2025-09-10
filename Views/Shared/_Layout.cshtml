@@ -30,7 +30,7 @@
                             Yeni Menü Oluşturmak için -li- ctrl+D
                         *@
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="NewUsers" asp-action="Index">Yeni Kayıt</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="NewUsers" asp-action="Create">Yeni Kayıt Ekle</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="CRUD" asp-action="Index">Kullanıcı Yönetimi</a>
@@ -50,7 +50,7 @@
         </nav>
     </header>
     <div class="container">
-        <p>Hoş geldin @User.Identity.Name <a href="Account/Logout">Çıkış yap</a></p>
+        <p>Hoş geldin @User.Identity.Name <a href="/Home/LogOut">Çıkış yap</a></p>
         @Html.Raw(TempData["Message"])
         <main role="main" class="pb-3">
             @RenderBody()

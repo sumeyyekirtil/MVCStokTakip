@@ -26,21 +26,22 @@ namespace MVCStokTakip.Controllers
         }
 
 		[HttpPost]
-		public async Task<IActionResult> Login(string kullaniciAdi, string sifre) //await metodunu kullanabilmek için asenkron iþlemler yapýlmasýný saðlar (make)
+		//veri gönderiminde input içindeki name kýsmý eþleþmez ise veri gönderimi doðru dönmez
+		public async Task<IActionResult> Login(string email, string password) //await metodunu kullanabilmek için asenkron iþlemler yapýlmasýný saðlar (make)
 		{
-			var kullanici = _context.Users.FirstOrDefault(u => u.Email == kullaniciAdi && u.Password == sifre);
+			var kullanici = _context.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
 			if (kullanici != null)
 			{
-				HttpContext.Session.SetString("kullaniciAdi", kullanici.Email);
+				HttpContext.Session.SetString("Email", kullanici.Email);
 				var haklar = new List<Claim>() //kullanýcý haklarý tanýmladýk
 				{
 					new(ClaimTypes.Email, kullanici.Email), //claim = hak (kullanýcýya tanýmlanan haklar)
-						new(ClaimTypes.Role, "admin@gmail.com")
+						new(ClaimTypes.Role, "admin")
 				};
 				var kullaniciKimligi = new ClaimsIdentity(haklar, "Login"); //kullanýcý için bir kimlik oluþturduk
 				ClaimsPrincipal claimsPrincipal = new(kullaniciKimligi); //bu sýnýftan bir nesne oluþturup bilgilerde saklý haklar ile kural oluþturulabilir
 				await HttpContext.SignInAsync(claimsPrincipal); //yukarýdaki yetkilerle sisteme giriþ yaptýk
-				return RedirectToAction("Index", "Product");
+				return RedirectToAction("Index", "Products");
 			}
 			else 
 				@TempData["Message"] = "<div class='alert alert-danger'>Giriþ Baþarýsýz</div>";
@@ -61,7 +62,8 @@ namespace MVCStokTakip.Controllers
 
 		public ActionResult LogOut()
 		{
-			//FormsAuthentication.SignOut();
+			//FormsAuthentication.SignOut(); //.net faramework mvc çýkýþ
+			HttpContext.SignOutAsync();
 			//Session.Abandon(); //býrakmak, terketmek
 			return RedirectToAction("Index", "Home");
 		}
