@@ -31,13 +31,13 @@ namespace MVCStokTakip.Controllers
 			var kullanici = _context.Users.FirstOrDefault(u => u.Email == kullaniciAdi && u.Password == sifre);
 			if (kullanici != null)
 			{
-				HttpContext.Session.SetInt32("kullaniciId", kullanici.Id);
+				HttpContext.Session.SetString("kullaniciAdi", kullanici.Email);
 				var haklar = new List<Claim>() //kullanýcý haklarý tanýmladýk
 				{
 					new(ClaimTypes.Email, kullanici.Email), //claim = hak (kullanýcýya tanýmlanan haklar)
 						new(ClaimTypes.Role, "admin@gmail.com")
 				};
-				var kullaniciKimligi = new ClaimsIdentity(haklar, "Index"); //kullanýcý için bir kimlik oluþturduk
+				var kullaniciKimligi = new ClaimsIdentity(haklar, "Login"); //kullanýcý için bir kimlik oluþturduk
 				ClaimsPrincipal claimsPrincipal = new(kullaniciKimligi); //bu sýnýftan bir nesne oluþturup bilgilerde saklý haklar ile kural oluþturulabilir
 				await HttpContext.SignInAsync(claimsPrincipal); //yukarýdaki yetkilerle sisteme giriþ yaptýk
 				return RedirectToAction("Index", "Product");
@@ -58,5 +58,12 @@ namespace MVCStokTakip.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+		public ActionResult LogOut()
+		{
+			//FormsAuthentication.SignOut();
+			//Session.Abandon(); //býrakmak, terketmek
+			return RedirectToAction("Index", "Home");
+		}
 	}
 }

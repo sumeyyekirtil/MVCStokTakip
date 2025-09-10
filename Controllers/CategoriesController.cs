@@ -113,12 +113,5 @@ namespace MVCStokTakip.Controllers
 				}
 			return View(collection);
 		}
-
-		public ActionResult LogOut()
-		{
-			//FormsAuthentication.SignOut();
-			//Session.Abandon(); //bırakmak, terketmek
-			return RedirectToAction("Index", "Home");
-		}
 	}
 }

@@ -1,26 +1,28 @@
 ﻿@{
     ViewData["Title"] = "Üye Giriş";
 }
+<section style="background-color : lightskyblue; font-style : italic; font-family : 'Franklin Gothic Book'; font-size: x-large">
+    <div class="text-center">
+        <h1 class="display-4">Hoşgeldiniz!</h1>
+        <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </div>
 
-<div class="text-center">
-    <h1 class="display-4">Hoşgeldiniz!</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
-
-<h2><i>Üye Girişi</i></h2>
-<div>
-    <form action="/Home/Login" method="post">
-        <h5>Mail Adresi</h5>
-        <input type="text" name="email" placeholder="Mail" />
-        <h5>Şifre</h5>
-        <input type="password" name="password" placeholder="Şifre" />
-        <br>
-        <br>
-        <input type="submit" value="Gönder" />
-    </form>
-</div>
-<br />
-<div>
-    <a href="https://www.google.com/" style="display: inline-block; padding-inline: 2px; font-family: 'Century Gothic'" class="btn btn-outline-danger">
-        Oturumu Kapat!</a>
-</div>
+    <h2><i>Üye Girişi</i></h2>
+    <div>
+        <form action="/Home/Login" method="post">
+            <h5>Mail Adresi</h5>
+            <input type="text" name="email" placeholder="Mail" required />
+            <h5>Şifre</h5>
+            <input type="password" name="password" placeholder="Şifre" />
+            <br>
+            <br>
+            <input type="submit" value="Gönder" />
+        </form>
+    </div>
+    <br />
+    <div>
+        <a href="https://www.google.com/" style="display: inline-block; padding-inline: 2px; font-family: 'Century Gothic'" class="btn btn-outline-danger">
+            Oturumu Kapat!
+        </a>
+    </div>
+</section>
